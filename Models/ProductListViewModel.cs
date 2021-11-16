@@ -16,6 +16,9 @@ namespace IlProgettoQuasiFinale.Models
         /// info su lista prodotti
         /// </summary>
         public List<ProductViewModel> ProductList { get; private set; }
-        public PaginationViewModel Pagination { get; set; }
+        /// <summary>
+        /// info sulla impaginazione 
+        /// </summary>
+
     }
 }

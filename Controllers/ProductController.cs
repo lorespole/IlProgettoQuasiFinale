@@ -1,4 +1,6 @@
 ﻿using GestioneMagazzinonew.Models;
+using IlProgettoQuasiFinale.Data;
+using IlProgettoQuasiFinale.Domain;
 using IlProgettoQuasiFinale.Models;
 using IlProgettoQuasiFinale.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,19 +14,13 @@ namespace IlProgettoQuasiFinale.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ILogger<ProductController> _logger;
-        private readonly ILogger<ProductController> _context;
-        private IProductService _productService;
-        public ProductController(Data.NORTHWINDContext context)
+        private NORTHWINDContext _context;
+
+        public ProductController(NORTHWINDContext context)
         {
-            
+             _context = context;
         }
-        public ProductController(ILogger<ProductController> logger , ILogger<ProductController> context, IProductService productService)
-        {
-            _logger = logger;
-            _context = context;
-            _productService = productService;
-        }
+
         public IActionResult Index()
         {
             return View();
@@ -44,10 +40,9 @@ namespace IlProgettoQuasiFinale.Controllers
 
             return View();
         }
-        public IActionResult Delete()
+        public void Delete(Product elem)
         {
-            
-            return View();
+            throw new NotImplementedException();
         }
     }
 }
