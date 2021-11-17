@@ -28,19 +28,15 @@
             <td>@Pvm.UnitsInStock</td>
             <td>@Pvm.UnitsOnOrder</td>
             <td>@Pvm.QuantityPerUnit</td>
-            <td>
-                <a class="btn btn-primary" asp-controller="Product" asp-action="Detail" asp-route-productId="@Pvm.ProductId">
-                    Dettagli
-                </a>
-            </td>
+            
             <td>
                 <a class="btn btn-primary" asp-controller="Product" asp-action="Save" asp-route-productId="@Pvm.ProductId">
-                    Edit
+                    Aggiorna
                 </a>
             </td>
             <td>
                 <a class="btn btn-primary" asp-controller="Product" asp-action="Delete" asp-route-productId="@Pvm.ProductId">
-                    Delete
+                    Elimina
                 </a>
             </td>
         </tr>

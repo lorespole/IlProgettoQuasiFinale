@@ -14,9 +14,11 @@ namespace IlProgettoQuasiFinale.Controllers
     public class ProductController : Controller
     {
         private NORTHWINDContext _context;
+        private readonly ILogger<ProductController> _logger;
 
         public ProductController(ILogger<ProductController> logger, NORTHWINDContext context)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -45,48 +47,60 @@ namespace IlProgettoQuasiFinale.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult Save(int productId)
         {
-           // _context.Products.Add();
-            _context.SaveChanges();
+            IActionResult result;
+            try 
+            {
+                var productTemp = _context.Products.FirstOrDefault(x => x.ProductId == productId);
+                _context.Products.Add(productTemp);
+
+            } catch (Exception ex) 
+            {
+                result = RedirectToAction("Error", "Home");
+                ex = (Exception)result;
+            }
             return View();
         }
 
         [HttpPost]
-        public IActionResult Add(ProductViewModel productInserito)
+        public IActionResult Save(ProductViewModel model)
         {
-            // _context.Products.Add(productInserito);
+            var categories = _context.Categories.Where(x => x.CategoryId == model.CategoryId);
+            model.CategoryName = categories.FirstOrDefault(x => x.CategoryId == model.CategoryId)?.CategoryName;
+            if(string.IsNullOrWhiteSpace(model.CategoryName)) 
+            {
+                ModelState.AddModelError(nameof(model.CategoryId), "Categoria non valida");
+            }
+            if (ModelState.IsValid) 
+            {
+               _context.Add(model.CategoryName);
+            }
             return View();
         }
-        public IActionResult Read(int productId)
+
+        public IActionResult Update(ProductViewModel model)
         {
-            var products = _context.Products.Where(x => true).ToList();
-            var product = _context.Attach(productId);
-            ProductViewModel model = new ProductViewModel();
+            
+            var product = _context.Products.FirstOrDefault(x => x.ProductId == model.ProductId);
 
-          //  model.ProductId = product.
+            product.CategoryId = product.CategoryId;
+            product.ProductId = product.ProductId;
+            product.ProductName = product.ProductName;
+            product.QuantityPerUnit = product.QuantityPerUnit;
+            product.UnitPrice = product.UnitPrice;
+            //  product.UnitsInStock = product.UnitsInStock;
 
-
+            _context.Products.Update(product);
+             _context.SaveChanges();
             return View();
         }
-        public IActionResult Update(int productId)
-        {
-            var productTemp = _context.Products.FirstOrDefault(x => x.ProductId == productId);
-            _context.Products.Update(productTemp);
-            _context.SaveChanges();
-            return View();
-         }
         public IActionResult Delete(int productId)
         {
             var productTemp = _context.Products.FirstOrDefault(x => x.ProductId == productId);
-            if (productTemp != null) {
-                _context.Products.Remove(productTemp);
-                _context.SaveChanges();
-            }
-            else 
-            {
-                Console.WriteLine("il valore del prodotto non esiste");
-            }
+            _context.Products.Remove(productTemp);
+            _context.SaveChanges();
+
             return View();
         }
     }
