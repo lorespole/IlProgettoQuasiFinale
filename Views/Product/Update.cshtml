@@ -1,0 +1,32 @@
+﻿@model ProductViewModel
+
+<form asp-action="Update" asp-controller="Product" method="post">
+    <input asp-for="ProductId" type="hidden" />
+    <div class="row">
+        <div class="col">
+            <label asp-for="ProductName"></label>
+            <input asp-for="ProductName" />
+        </div>
+        <div class="col">
+            <label asp-for="QuantityPerUnit"></label>
+            <input asp-for="QuantityPerUnit" />
+        </div>
+        <div class="col">
+            <label asp-for="UnitPrice"></label>
+            <input asp-for="UnitPrice" />
+        </div>
+        <div class="col">
+            <label asp-for="ReorderLevel"></label>
+            <input asp-for="ReorderLevel" />
+        </div>
+        <div class="col">
+            <label asp-for="UnitsInStock"></label>
+            <input asp-for="UnitsInStock" />
+        </div>
+        <div class="col">
+            <label asp-for="UnitsOnOrder"></label>
+            <input asp-for="UnitsOnOrder" />
+        </div>
+        <input type="submit" value="Aggiorna" class="btn btn-info" />
+    </div>
+</form>

@@ -17,20 +17,18 @@
     </thead>
     <tbody>
         @foreach (var Pvm in Model.ProductList)
-        {
+         {
         <tr>
             <td>@Pvm.ProductId</td>
             <td>@Pvm.ProductName</td>
             <td>@Pvm.CategoryId</td>
-            <td>@Pvm.CategoryName</td>
             <td>@Pvm.QuantityPerUnit</td>
             <td>@Pvm.UnitPrice</td>
             <td>@Pvm.UnitsInStock</td>
             <td>@Pvm.UnitsOnOrder</td>
             <td>@Pvm.QuantityPerUnit</td>
-            
             <td>
-                <a class="btn btn-primary" asp-controller="Product" asp-action="Save" asp-route-productId="@Pvm.ProductId">
+                <a class="btn btn-primary" asp-controller="Product" asp-action="Update" asp-route-productId="@Pvm.ProductId">
                     Aggiorna
                 </a>
             </td>
@@ -41,10 +39,8 @@
             </td>
         </tr>
 
-        }
+         }
     </tbody>
 </table>
 
-<a class="btn btn-primary" asp-controller="Product" asp-action="Save">
-    Insert
-</a>
+<a class="btn btn-primary" href="~/Product/Save">Inserisci prodotto</a>

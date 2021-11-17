@@ -1,19 +1,11 @@
 ﻿@model  ProductViewModel
 
-<form asp-action="save" asp-controller="Product">
+<form asp-action="Insert" asp-controller="Product" method="post">
 <input asp-for="ProductId" type="hidden"/>
 <div class="row">
     <div class="col">
         <label asp-for="ProductName"></label>
         <input asp-for="ProductName" />
-    </div>
-    <div class="col">
-        <label asp-for="CategoryName"></label>
-        <input asp-for="CategoryName" />
-    </div>
-    <div class="col">
-        <label asp-for="Quantity"></label>
-        <input asp-for="Quantity" />
     </div>
     <div class="col">
         <label asp-for="QuantityPerUnit"></label>
@@ -23,10 +15,18 @@
         <label asp-for="UnitPrice"></label>
         <input asp-for="UnitPrice" />
     </div>
-    <div class="row">
-        <button class="btn btn-info" type="button"></button>
-        Inserisci
-        <a class="btn btn-info" asp-action="Index" asp-controller="Product"></a>
+    <div class="col">
+        <label asp-for="ReorderLevel"></label>
+        <input asp-for="ReorderLevel" />
     </div>
+    <div class="col">
+        <label asp-for="UnitsInStock"></label>
+        <input asp-for="UnitsInStock" />
+    </div>
+    <div class="col">
+        <label asp-for="UnitsOnOrder"></label>
+        <input asp-for="UnitsOnOrder" />
+    </div>
+    <input type="submit" value="Inserisci" class="btn btn-info" />
 </div>
 </form>

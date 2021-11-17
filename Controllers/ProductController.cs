@@ -31,7 +31,6 @@ namespace IlProgettoQuasiFinale.Controllers
                 ProductViewModel p = new ProductViewModel();
                 var category = _context.Categories.Where(x => x.CategoryId == product.CategoryId).FirstOrDefault();
                 p.CategoryId = product.CategoryId;
-                p.CategoryName = category.CategoryName;
                 p.ProductId = product.ProductId;
                 p.ProductName = product.ProductName;
                 p.QuantityPerUnit = product.QuantityPerUnit;
@@ -46,6 +45,32 @@ namespace IlProgettoQuasiFinale.Controllers
 
             return View(model);
         }
+        public IActionResult Insert(ProductViewModel model)
+        {
+            try 
+            {
+                if(ModelState.IsValid) 
+                {
+                    Products products = new Products();
+                    products.ProductName = model.ProductName;
+                    products.CategoryId = model.CategoryId;
+                    products.QuantityPerUnit = model.QuantityPerUnit;
+                    products.ReorderLevel = model.ReorderLevel;
+                    products.UnitsInStock = model.UnitsInStock;
+                    products.UnitPrice = model.UnitPrice;
+                    products.UnitsOnOrder = model.UnitsOnOrder;
+                    _context.Products.Add(products);
+                    _context.SaveChanges();
+                    
+                }
+            }
+            catch (Exception ex) 
+            {
+                ModelState.AddModelError("Error", "Shared");
+            }
+
+            return RedirectToAction("Index");
+        }
         [HttpGet]
         public IActionResult Save(int productId)
         {
@@ -53,47 +78,33 @@ namespace IlProgettoQuasiFinale.Controllers
             try 
             {
                 var productTemp = _context.Products.FirstOrDefault(x => x.ProductId == productId);
-                _context.Products.Add(productTemp);
-
+                _context.Add(productTemp);
+                _context.SaveChanges();
             } catch (Exception ex) 
             {
                 result = RedirectToAction("Error", "Home");
-                ex = (Exception)result;
+                ex.ToString();
             }
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Save(ProductViewModel model)
-        {
-            var categories = _context.Categories.Where(x => x.CategoryId == model.CategoryId);
-            model.CategoryName = categories.FirstOrDefault(x => x.CategoryId == model.CategoryId)?.CategoryName;
-            if(string.IsNullOrWhiteSpace(model.CategoryName)) 
-            {
-                ModelState.AddModelError(nameof(model.CategoryId), "Categoria non valida");
-            }
-            if (ModelState.IsValid) 
-            {
-               _context.Add(model.CategoryName);
-            }
-            return View();
-        }
+
 
         public IActionResult Update(ProductViewModel model)
         {
             
             var product = _context.Products.FirstOrDefault(x => x.ProductId == model.ProductId);
 
-            product.CategoryId = product.CategoryId;
-            product.ProductId = product.ProductId;
-            product.ProductName = product.ProductName;
-            product.QuantityPerUnit = product.QuantityPerUnit;
-            product.UnitPrice = product.UnitPrice;
+            product.CategoryId = model.CategoryId;
+            product.ProductId = model.ProductId;
+            product.ProductName = model.ProductName;
+            product.QuantityPerUnit = model.QuantityPerUnit;
+            product.UnitPrice = model.UnitPrice;
             //  product.UnitsInStock = product.UnitsInStock;
 
-            _context.Products.Update(product);
+             _context.Products.Update(product);
              _context.SaveChanges();
-            return View();
+            return View(product);
         }
         public IActionResult Delete(int productId)
         {
