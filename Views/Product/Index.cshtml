@@ -3,13 +3,52 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">Categoria</th>
-            <th scope="col">Quantità</th>
+            <th scope="col">Product Id</th>
+            <th scope="col">ProductName</th>
+            <th scope="col">CategoryId</th>
+            <th scope="col">CategoryName</th>
+            <th scope="col">quantità</th>
+            <th scope="col">UnitPrice</th>
+            <th scope="col">UnitsInStock</th>
+            <th scope="col">UnitsOnOrder</th>
+            <th scope="col">QuantityPerUnit</th>
             <th scope="col" colspan="2"></th>
         </tr>
     </thead>
     <tbody>
-    <!-- foreach da fare -->
+        @foreach (var Pvm in Model.ProductList)
+        {
+        <tr>
+            <td>@Pvm.ProductId</td>
+            <td>@Pvm.ProductName</td>
+            <td>@Pvm.CategoryId</td>
+            <td>@Pvm.CategoryName</td>
+            <td>@Pvm.QuantityPerUnit</td>
+            <td>@Pvm.UnitPrice</td>
+            <td>@Pvm.UnitsInStock</td>
+            <td>@Pvm.UnitsOnOrder</td>
+            <td>@Pvm.QuantityPerUnit</td>
+            <td>
+                <a class="btn btn-primary" asp-controller="Product" asp-action="Detail" asp-route-productId="@Pvm.ProductId">
+                    Dettagli
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-controller="Product" asp-action="Save" asp-route-productId="@Pvm.ProductId">
+                    Edit
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-controller="Product" asp-action="Delete" asp-route-productId="@Pvm.ProductId">
+                    Delete
+                </a>
+            </td>
+        </tr>
+
+        }
     </tbody>
 </table>
+
+<a class="btn btn-primary" asp-controller="Product" asp-action="Save">
+    Insert
+</a>

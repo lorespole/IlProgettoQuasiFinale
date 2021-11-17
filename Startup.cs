@@ -1,5 +1,4 @@
 using IlProgettoQuasiFinale.Data;
-using IlProgettoQuasiFinale.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +28,6 @@ namespace IlProgettoQuasiFinale
             services.AddDbContext<NORTHWINDContext>(options
                 => options.UseSqlServer
                 (Configuration.GetConnectionString("DefaultConnection")));
-            services.AddTransient<IProductService, ProductService>();
             services.AddControllersWithViews();
         }
 
