@@ -30,7 +30,7 @@ namespace IlProgettoQuasiFinale.Controllers
             foreach (var product in products) {
                 ProductViewModel p = new ProductViewModel();
                 var category = _context.Categories.Where(x => x.CategoryId == product.CategoryId).FirstOrDefault();
-                p.CategoryId = product.CategoryId;
+                p.CategoryId = product.CategoryId.GetValueOrDefault();
                 p.ProductId = product.ProductId;
                 p.ProductName = product.ProductName;
                 p.QuantityPerUnit = product.QuantityPerUnit;
@@ -63,6 +63,7 @@ namespace IlProgettoQuasiFinale.Controllers
                     _context.SaveChanges();
                     
                 }
+                var t = ModelState.Values.SelectMany(v => v.Errors);
             }
             catch (Exception ex) 
             {
@@ -89,22 +90,50 @@ namespace IlProgettoQuasiFinale.Controllers
         }
 
 
-
-        public IActionResult Update(ProductViewModel model)
+        [HttpGet]
+        public IActionResult Update(int productId)
         {
             
-            var product = _context.Products.FirstOrDefault(x => x.ProductId == model.ProductId);
+            var product = _context.Products.FirstOrDefault(x => x.ProductId == productId);
+            ProductViewModel p = new ProductViewModel();
+            var category = _context.Categories.Where(x => x.CategoryId == product.CategoryId).FirstOrDefault();
+            p.CategoryId = product.CategoryId.GetValueOrDefault();
+            p.ProductId = product.ProductId;
+            p.ProductName = product.ProductName;
+            p.QuantityPerUnit = product.QuantityPerUnit;
+            p.UnitPrice = product.UnitPrice;
+            p.UnitsInStock = product.UnitsInStock;
+            p.UnitsOnOrder = product.UnitsOnOrder;
+            p.ReorderLevel = product.ReorderLevel;
+            p.Discontinued = product.Discontinued;
 
-            product.CategoryId = model.CategoryId;
-            product.ProductId = model.ProductId;
-            product.ProductName = model.ProductName;
-            product.QuantityPerUnit = model.QuantityPerUnit;
-            product.UnitPrice = model.UnitPrice;
-            //  product.UnitsInStock = product.UnitsInStock;
+            return View(p);
+        }
+        [HttpPost]
+        public IActionResult Update(ProductViewModel model)
+        {
+            try 
+            {
+                if (ModelState.IsValid)
+                {
+                    Product product = new Product();
+                    var productUpdate = _context.Products.FirstOrDefault(x => x.ProductId == model.ProductId);
+                    productUpdate.ProductName = model.ProductName;
+                    productUpdate.QuantityPerUnit = model.QuantityPerUnit;
+                    productUpdate.UnitPrice = model.UnitPrice;
+                    productUpdate.UnitsInStock = model.UnitsInStock;
+                    productUpdate.UnitsOnOrder = model.UnitsOnOrder;
+                    _context.Update(productUpdate);
+                    _context.SaveChanges();
+                }
+                
+            }
+            catch (Exception ex) 
+            {
+                ModelState.AddModelError("Error", "Shared");
+            }
 
-             _context.Products.Update(product);
-             _context.SaveChanges();
-            return View(product);
+            return View();
         }
         public IActionResult Delete(int productId)
         {
